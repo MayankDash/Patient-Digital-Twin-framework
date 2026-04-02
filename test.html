@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A1 Poster - Metabolic Risk Digital Twin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      @page {
+        size: A1 landscape;
+        margin: 0;
+      }
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body {
+        width: 33.11in;
+        height: 23.39in;
+        margin: 0 auto;
+        padding: 0.85in;
+        box-sizing: border-box;
+        overflow: hidden;
+        font-family: "Inter", sans-serif;
+        background:
+          radial-gradient(
+            1200px 600px at 15% 15%,
+            rgba(0, 128, 128, 0.08),
+            transparent 60%
+          ),
+          radial-gradient(
+            1200px 600px at 85% 20%,
+            rgba(0, 31, 63, 0.1),
+            transparent 60%
+          ),
+          #f8fafc;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(6px);
+      }
+      .chip {
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .qr {
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        background-size: 10px 10px;
+      }
+      .dashboard-mockup {
+        background-image: linear-gradient(to bottom right, #ffffff, #f1f5f9);
+      }
+      .metricBar {
+        height: 12px;
+      }
+    </style>
+  </head>
+
+  <body class="flex flex-col text-slate-800">
+    <header class="bg-[#001F3F] text-white p-12 rounded-t-3xl shadow-lg mb-8">
+      <div class="flex items-start justify-between gap-10">
+        <div class="flex-1">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="chip px-4 py-2 rounded-xl text-slate-50/90 text-xl">
+              A1 Poster · Assessment 5
+            </div>
+            <div class="chip px-4 py-2 rounded-xl text-slate-50/90 text-xl">
+              NHANES 2017–2018
+            </div>
+            <div class="chip px-4 py-2 rounded-xl text-slate-50/90 text-xl">
+              Digital Twin + What‑If Dashboard
+            </div>
+          </div>
+
+          <h1 class="text-6xl font-extrabold tracking-tight leading-[1.08]">
+            A Machine Learning‑Based Patient Digital Twin Framework for
+            Metabolic Risk Prediction
+          </h1>
+
+          <div class="mt-6">
+            <h2 class="text-3xl font-semibold">Mayank Dash</h2>
+            <h3 class="text-2xl font-light text-slate-300 mt-2">
+              School of Computer Science and Engineering, Vellore Institute of
+              Technology, Vellore, India
+            </h3>
+          </div>
+
+          <div class="mt-8 grid grid-cols-3 gap-4">
+            <div class="chip rounded-2xl p-5">
+              <div class="text-slate-200 text-lg">Deployed model</div>
+              <div class="text-3xl font-bold">Logistic Regression (L2)</div>
+              <div class="text-slate-200 text-lg mt-1">
+                L1 artifact also available for sparsity
+              </div>
+            </div>
+            <div class="chip rounded-2xl p-5">
+              <div class="text-slate-200 text-lg">Best CV (F1)</div>
+              <div class="text-3xl font-bold">0.737</div>
+              <div class="text-slate-200 text-lg mt-1">
+                5‑fold Stratified CV
+              </div>
+            </div>
+            <div class="chip rounded-2xl p-5">
+              <div class="text-slate-200 text-lg">Holdout test (F1)</div>
+              <div class="text-3xl font-bold">0.709</div>
+              <div class="text-slate-200 text-lg mt-1">Threshold = 0.4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow grid grid-cols-3 gap-8">
+      <div class="flex flex-col gap-8">
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#001F3F]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#001F3F] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            1. Introduction & Objectives
+          </h3>
+          <ul class="text-xl space-y-4 list-disc pl-6">
+            <li>
+              <strong class="text-[#008080]">The Problem:</strong> Traditional
+              risk assessments rely on static statistical models that fail to
+              capture individual metabolic variability.
+            </li>
+            <li>
+              <strong class="text-[#008080]">The Gap:</strong> Many healthcare
+              digital twins rely on complex physiological simulations that
+              hinder scalability and real-time clinical use.
+            </li>
+            <li>
+              <strong class="text-[#008080]">Our Solution:</strong> An
+              interpretable, machine learning-driven Digital Twin (DT) framework
+              using nationally representative data.
+            </li>
+            <li>
+              <strong class="text-[#008080]">Deliverable:</strong> A
+              reproducible pipeline + API + React dashboard enabling real-time
+              prediction and actionable what‑if analysis.
+            </li>
+          </ul>
+        </section>
+
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#001F3F]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#001F3F] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            2. Data & Digital Twin Encoding
+          </h3>
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <p class="text-xl mb-4">
+                The framework constructs patient-level records from NHANES and
+                encodes each patient as a compact “digital twin” state.
+              </p>
+              <ul class="text-xl space-y-3 list-disc pl-6">
+                <li><strong>Data Source:</strong> NHANES 2017–2018.</li>
+                <li><strong>Processed cohort:</strong> 2,899 participants.</li>
+                <li>
+                  <strong>Inputs:</strong> Age, Gender, BMI, BP, Glucose,
+                  Insulin, Total Cholesterol, HDL.
+                </li>
+                <li>
+                  <strong>Label:</strong> Metabolic risk derived from HbA1c
+                  thresholding (target creation only).
+                </li>
+              </ul>
+            </div>
+
+            <div
+              class="bg-slate-100 p-6 rounded-xl border border-slate-200 text-center"
+            >
+              <p class="text-xl font-semibold text-slate-600 mb-2">
+                Mathematical Twin Encoding
+              </p>
+              <p class="text-3xl font-mono text-[#001F3F]">
+                DT<sub class="text-xl">i</sub> = { X<sub class="text-xl">i</sub>
+                , p̂<sub class="text-xl">i</sub> , R<sub class="text-xl">i</sub>
+                }
+              </p>
+              <p class="text-lg text-slate-500 mt-2">
+                Features (X), Predicted Probability (p̂), Risk Label (R)
+              </p>
+              <div class="mt-5 grid grid-cols-3 gap-3">
+                <div class="bg-white rounded-lg border border-slate-200 p-3">
+                  <div class="text-slate-500 text-sm">Inputs</div>
+                  <div class="text-lg font-semibold">8 biomarkers</div>
+                </div>
+                <div class="bg-white rounded-lg border border-slate-200 p-3">
+                  <div class="text-slate-500 text-sm">Output</div>
+                  <div class="text-lg font-semibold">Probability</div>
+                </div>
+                <div class="bg-white rounded-lg border border-slate-200 p-3">
+                  <div class="text-slate-500 text-sm">Decision</div>
+                  <div class="text-lg font-semibold">Thresholding</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#008080]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#008080] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            3. End‑to‑End System Pipeline
+          </h3>
+          <p class="text-xl mb-5">
+            Research notebooks are preserved; a production-style pipeline is
+            implemented via scripts, artifacts, an API, and a dashboard.
+          </p>
+          <div class="bg-white rounded-xl border border-slate-200 p-6">
+            <svg
+              viewBox="0 0 980 140"
+              class="w-full h-[2.1in]"
+              role="img"
+              aria-label="System pipeline"
+            >
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#001F3F" stop-opacity="0.95" />
+                  <stop offset="1" stop-color="#008080" stop-opacity="0.95" />
+                </linearGradient>
+              </defs>
+              <rect
+                x="0"
+                y="0"
+                width="980"
+                height="140"
+                rx="18"
+                fill="#f8fafc"
+              />
+              <g font-family="Inter, sans-serif" font-size="22" fill="#0f172a">
+                <g>
+                  <rect
+                    x="24"
+                    y="36"
+                    width="170"
+                    height="68"
+                    rx="16"
+                    fill="#ffffff"
+                    stroke="#cbd5e1"
+                  />
+                  <text x="44" y="68" font-weight="700">NHANES XPT</text>
+                  <text x="44" y="94" fill="#475569">raw tables</text>
+                </g>
+                <g>
+                  <rect
+                    x="230"
+                    y="36"
+                    width="190"
+                    height="68"
+                    rx="16"
+                    fill="#ffffff"
+                    stroke="#cbd5e1"
+                  />
+                  <text x="250" y="68" font-weight="700">Build dataset</text>
+                  <text x="250" y="94" fill="#475569">
+                    scripts/build_dataset.py
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="456"
+                    y="36"
+                    width="190"
+                    height="68"
+                    rx="16"
+                    fill="#ffffff"
+                    stroke="#cbd5e1"
+                  />
+                  <text x="476" y="68" font-weight="700">Train + tune</text>
+                  <text x="476" y="94" fill="#475569">L2 + optional L1</text>
+                </g>
+                <g>
+                  <rect
+                    x="682"
+                    y="36"
+                    width="130"
+                    height="68"
+                    rx="16"
+                    fill="#ffffff"
+                    stroke="#cbd5e1"
+                  />
+                  <text x="702" y="68" font-weight="700">Artifacts</text>
+                  <text x="702" y="94" fill="#475569">joblib + JSON</text>
+                </g>
+                <g>
+                  <rect
+                    x="838"
+                    y="36"
+                    width="118"
+                    height="68"
+                    rx="16"
+                    fill="url(#g)"
+                  />
+                  <text x="858" y="72" font-weight="800" fill="#ffffff">
+                    API + UI
+                  </text>
+                  <text x="858" y="96" fill="#e2e8f0">Predict + What‑If</text>
+                </g>
+              </g>
+              <g stroke="#64748b" stroke-width="4" stroke-linecap="round">
+                <line x1="196" y1="70" x2="226" y2="70" />
+                <line x1="422" y1="70" x2="452" y2="70" />
+                <line x1="648" y1="70" x2="678" y2="70" />
+                <line x1="812" y1="70" x2="834" y2="70" />
+              </g>
+            </svg>
+          </div>
+        </section>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#001F3F]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#001F3F] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            4. Model Training & Evaluation
+          </h3>
+          <p class="text-xl mb-5">
+            The deployed model is a scikit‑learn pipeline (imputation → scaling
+            → logistic regression). Hyperparameters are tuned using 5‑fold
+            stratified CV (objective: F1).
+          </p>
+
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-6">
+              <div class="text-xl font-bold text-slate-700">CV selection</div>
+              <div class="mt-3 text-lg text-slate-600">
+                Best params: <span class="font-mono">C=0.1, penalty=l2</span>
+              </div>
+              <div class="mt-3 text-lg text-slate-600">
+                Best CV F1: <span class="font-bold">0.737</span>
+              </div>
+              <div class="mt-5 text-lg text-slate-600">
+                L1 regularization artifact available for sparse, interpretable
+                alternatives.
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6">
+              <div class="text-xl font-bold text-slate-700">
+                Holdout test (threshold = 0.4)
+              </div>
+
+              <div class="mt-4 space-y-3">
+                <div>
+                  <div class="flex justify-between text-lg font-semibold">
+                    <span>Accuracy</span><span class="font-mono">0.755</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full metricBar">
+                    <div
+                      class="bg-[#001F3F] metricBar rounded-full"
+                      style="width: 75.5%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-lg font-semibold">
+                    <span>Precision</span><span class="font-mono">0.681</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full metricBar">
+                    <div
+                      class="bg-[#008080] metricBar rounded-full"
+                      style="width: 68.1%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-lg font-semibold">
+                    <span>Recall</span><span class="font-mono">0.739</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full metricBar">
+                    <div
+                      class="bg-[#008080] metricBar rounded-full"
+                      style="width: 73.9%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-lg font-semibold">
+                    <span>F1</span><span class="font-mono">0.709</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full metricBar">
+                    <div
+                      class="bg-[#001F3F] metricBar rounded-full"
+                      style="width: 70.9%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-base text-slate-500 mt-4">
+                Metrics sourced from saved artifact metadata.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#008080] flex-grow"
+        >
+          <h3
+            class="text-3xl font-bold text-[#008080] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            5. Interactive Digital Twin Dashboard
+          </h3>
+          <p class="text-xl mb-6">
+            The system is operationalized via a real-time React web application,
+            bridging theoretical ML with practical clinical decision support.
+          </p>
+
+          <div
+            class="dashboard-mockup w-full h-72 rounded-xl border-2 border-dashed border-[#008080] flex items-center justify-center mb-6 shadow-inner relative overflow-hidden"
+          >
+            <div class="text-center">
+              <div class="text-2xl font-bold text-slate-500 mb-2">
+                Dashboard Screenshot
+              </div>
+              <p class="text-xl font-semibold text-slate-500">
+                Insert Dashboard UI Screenshot Here
+              </p>
+              <p class="text-base text-slate-400 mt-1">
+                Replace this box with a high‑resolution image
+              </p>
+            </div>
+          </div>
+
+          <ul class="text-xl space-y-3 list-disc pl-6">
+            <li>
+              <strong>Interactive Inputs:</strong> Real-time entry of clinical
+              biomarkers.
+            </li>
+            <li>
+              <strong>What‑If Simulator:</strong> Adjust biomarkers (e.g., lower
+              BMI) to observe dynamic risk shifts.
+            </li>
+            <li>
+              <strong>Live Metrics:</strong> Displays the active model’s holdout
+              metrics for transparency.
+            </li>
+            <li>
+              <strong>Explainability:</strong> “Top drivers” highlight the most
+              influential features for the current prediction.
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#001F3F]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#001F3F] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            6. Threshold Optimization (Screening)
+          </h3>
+          <p class="text-xl mb-4">
+            In screening contexts, minimizing false negatives (maximizing
+            recall) is important to capture at‑risk patients.
+          </p>
+          <div class="flex gap-4 mt-6">
+            <div
+              class="flex-1 bg-slate-50 p-4 rounded-lg border border-slate-200 text-center"
+            >
+              <p class="text-lg font-semibold text-slate-500 mb-1">
+                Baseline (Threshold 0.5)
+              </p>
+              <p class="text-3xl font-bold text-slate-700">Recall: 0.658</p>
+            </div>
+            <div
+              class="flex-1 bg-teal-50 p-4 rounded-lg border border-teal-200 text-center"
+            >
+              <p class="text-lg font-semibold text-[#008080] mb-1">
+                Optimized (Threshold 0.4)
+              </p>
+              <p class="text-3xl font-bold text-[#008080]">Recall: 0.739</p>
+            </div>
+          </div>
+          <p class="text-base text-slate-500 mt-4">
+            Recall values reflect holdout test metrics stored in artifact
+            metadata.
+          </p>
+        </section>
+
+        <section
+          class="card p-8 rounded-2xl shadow-md border-t-8 border-[#001F3F]"
+        >
+          <h3
+            class="text-3xl font-bold text-[#001F3F] mb-6 border-b-2 border-slate-200 pb-2"
+          >
+            7. What‑If + Drivers (Explainability)
+          </h3>
+          <p class="text-xl mb-4">
+            The digital twin supports scenario simulation: modify one feature
+            and observe the change in predicted probability. Drivers are derived
+            from standardized pipeline contributions.
+          </p>
+
+          <div class="grid grid-cols-2 gap-6 mt-6">
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-6">
+              <div class="text-xl font-bold text-slate-700 mb-4">
+                What‑If curve
+              </div>
+              <div
+                class="rounded-xl border-2 border-dashed border-slate-300 h-[2.3in] flex items-center justify-center bg-white"
+              >
+                <div class="text-center text-slate-500">
+                  <div class="text-xl font-semibold">
+                    Insert curve screenshot
+                  </div>
+                  <div class="text-base text-slate-400 mt-1">
+                    Probability vs Δ (dynamic)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6">
+              <div class="text-xl font-bold text-slate-700 mb-4">
+                Top drivers
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-lg font-semibold mb-1">
+                    <span>Glucose</span
+                    ><span class="text-[#008080]">↑ increases</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full h-4">
+                    <div
+                      class="bg-[#008080] h-4 rounded-full"
+                      style="width: 100%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-lg font-semibold mb-1">
+                    <span>Age</span
+                    ><span class="text-[#008080]">↑ increases</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full h-4">
+                    <div
+                      class="bg-[#008080] h-4 rounded-full"
+                      style="width: 70%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-lg font-semibold mb-1">
+                    <span>BMI</span
+                    ><span class="text-[#008080]">↑ increases</span>
+                  </div>
+                  <div class="w-full bg-slate-200 rounded-full h-4">
+                    <div
+                      class="bg-[#008080] h-4 rounded-full"
+                      style="width: 45%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-base text-slate-500 mt-4">
+                Example visualization; actual drivers are computed in the API.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="bg-[#001F3F] text-white p-8 rounded-2xl shadow-md flex-grow"
+        >
+          <h3 class="text-3xl font-bold mb-6 border-b-2 border-slate-500 pb-2">
+            8. Deployment, Testing & Conclusions
+          </h3>
+
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <div class="text-xl font-semibold text-slate-200">
+                Architecture
+              </div>
+              <ul class="text-xl space-y-3 list-disc pl-6 mt-3">
+                <li>
+                  <strong>FastAPI:</strong> /predict, /analyze, /model-info
+                </li>
+                <li><strong>Artifacts:</strong> joblib + metadata JSON</li>
+                <li>
+                  <strong>React UI:</strong> dashboard + what-if simulator
+                </li>
+                <li>
+                  <strong>Figures:</strong> confusion matrix served securely
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="text-xl font-semibold text-slate-200">
+                Verification
+              </div>
+              <div class="mt-3 grid grid-cols-2 gap-3">
+                <div class="chip rounded-xl p-4">
+                  <div class="text-slate-200 text-lg">Backend tests</div>
+                  <div class="text-3xl font-extrabold">9/9</div>
+                  <div class="text-slate-200 text-base">pytest PASS</div>
+                </div>
+                <div class="chip rounded-xl p-4">
+                  <div class="text-slate-200 text-lg">Frontend gates</div>
+                  <div class="text-3xl font-extrabold">PASS</div>
+                  <div class="text-slate-200 text-base">lint + build</div>
+                </div>
+              </div>
+              <div class="text-slate-200 text-base mt-4">
+                See Test Report & Validation Report (PDFs) for evidence.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-7">
+            <div class="text-xl font-semibold text-slate-200">Conclusions</div>
+            <ul class="text-xl space-y-4 list-disc pl-6 mt-3">
+              <li>
+                <strong>Scalability:</strong> Strong predictive performance
+                without complex biophysical simulation.
+              </li>
+              <li>
+                <strong>Interpretability:</strong> Logistic regression + drivers
+                support transparent clinical reasoning.
+              </li>
+              <li>
+                <strong>Future work:</strong> Longitudinal updates and lifestyle
+                factors for continuous twin evolution.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="mt-8">
+      <div
+        class="bg-white/70 rounded-2xl border border-slate-200 px-10 py-6 flex items-center justify-between"
+      >
+        <div class="text-lg text-slate-600">
+          <span class="font-semibold text-slate-800">Contact:</span>
+          mayankdash717@gamil.com.com
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

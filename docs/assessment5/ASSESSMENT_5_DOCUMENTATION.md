@@ -2,25 +2,40 @@
 
 **Project title:** Metabolic Risk Digital Twin (NHANES 2017–2018)
 
-This document is the detailed “single source of truth” for the project as it exists now: data → training → artifacts → API → React dashboard → testing/validation. It is written for assessment submission and demo-readiness.
+## 1) Project overview
 
-**Important constraint:** existing research notebooks in `notebooks/` were not modified (they back your paper).
+In this assessment, we built a lightweight “patient digital twin” framework to predict metabolic risk using the NHANES 2017–2018 dataset. The goal was to keep the model interpretable and reproducible, and then operationalize it through a simple, usable demo stack:
 
-## 1) Executive summary
+- A reproducible training pipeline (scripts + versioned artifacts)
+- A FastAPI backend for inference and what‑if analysis
+- A React (Vite) dashboard for interactive inputs, model switching (L2/L1), and scenario simulation
 
-This project builds a Patient Digital Twin for metabolic risk screening using NHANES 2017–2018. A patient is represented as a compact, clinically meaningful feature vector. The system provides:
+This document explains the dataset setup, modeling decisions, system architecture, how to run the project, and how we verified it.
 
-- A reproducible ML pipeline (train, tune, export)
-- A FastAPI service for inference and analysis
-- A React dashboard UI that supports prediction and “what-if” simulation with a visual curve that changes when inputs change
+## 2) Quick start (local)
 
-## 2) Submission deliverables (what you can submit)
+### 2.1 Python environment
 
-- Full documentation: `docs/assessment5/ASSESSMENT_5_DOCUMENTATION.md`
-- Test report (Markdown + PDF): `docs/assessment5/TEST_REPORT.md`, `docs/assessment5/TEST_REPORT.pdf`
-- Validation report (Markdown + PDF): `docs/assessment5/VALIDATION_REPORT.md`, `docs/assessment5/VALIDATION_REPORT.pdf`
-- Poster outline: `docs/assessment5/POSTER_OUTLINE_A1.md`
-- Demo checklist + script: `docs/assessment5/DEMO_CHECKLIST.md`, `docs/assessment5/DEMO_VIDEO_SCRIPT.md`
+```bash
+".venv/bin/python" -m pip install -r requirements.txt
+".venv/bin/python" -m pip install -e .
+```
+
+### 2.2 Run the API
+
+```bash
+".venv/bin/python" -m uvicorn healthcare_digital_twin.api:app --reload --port 8000
+```
+
+### 2.3 Run the UI
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open: `http://127.0.0.1:5173`.
 
 ## 3) Repository structure
 
@@ -28,23 +43,23 @@ This project builds a Patient Digital Twin for metabolic risk screening using NH
 - `data/processed/` — cleaned patient dataset used for modeling
 - `src/healthcare_digital_twin/` — reusable Python package (data, modeling, inference, API)
 - `scripts/` — CLI entrypoints (`build_dataset.py`, `train.py`, `predict.py`)
-- `artifacts/` — trained pipeline(s) + metadata JSON (reproducibility evidence)
-- `reports/figures/` — confusion matrix figures saved at training time
+- `artifacts/` — trained pipelines + metadata JSON (reproducibility evidence)
+- `reports/figures/` — evaluation figures saved at training time
 - `frontend/` — React UI (Vite) that calls the API
 
 ## 4) Dataset and label
 
 **Dataset:** NHANES 2017–2018.
 
-**Integration approach:** multiple NHANES tables are merged by participant identifier `SEQN` to form one patient-level record.
+**Integration approach:** We merge multiple NHANES tables using the participant identifier `SEQN` to create one patient-level row per participant.
 
 **Processed dataset:** `data/processed/patient_state_clean.csv`.
 
-**Target label:** `Metabolic_Risk` created from HbA1c thresholding (as defined in your research work). HbA1c is used only to create the label and is excluded from input features.
+**Target label:** `Metabolic_Risk` is created from HbA1c thresholding (consistent with our research pipeline). HbA1c is used only to build the label and is not part of the input feature set.
 
 ## 5) Feature set (Digital Twin inputs)
 
-The deployed system uses 9 features (also recorded in artifact metadata):
+The deployed system uses 9 features (recorded in artifact metadata for traceability):
 
 - `Age`
 - `Gender` (0=Male, 1=Female)
@@ -60,42 +75,42 @@ The deployed system uses 9 features (also recorded in artifact metadata):
 
 ### 6.1 Pipeline
 
-Training and inference use one scikit-learn Pipeline:
+Training and inference use a single scikit-learn Pipeline:
 
 1. Median imputation
 2. Standard scaling
 3. Logistic Regression classifier
 
-This prevents train/serve mismatch and reduces leakage risk.
+Using the same pipeline at train and serve time helps avoid train/serve mismatch and keeps the preprocessing consistent.
 
-### 6.2 Train/test + tuning
+### 6.2 Train/test split and tuning
 
 - Stratified train/test split (`test_size=0.2`, `random_state=42`)
-- Stratified 5-fold CV for tuning
+- Stratified 5‑fold cross‑validation for tuning
 - Primary optimization metric: F1
 
 ### 6.3 Regularization modes (L2 vs L1)
 
-Two artifacts can be produced and served:
+We support two regularization settings through separate saved artifacts:
 
-- **L2 (default “best” model):** stable baseline performance
-- **L1 (sparse model):** encourages sparsity and supports more “explainable” behavior in coefficient-based driver reporting
+- **L2 (default):** stable baseline performance
+- **L1 (sparse):** encourages sparsity and can simplify driver reporting (useful for interpretability)
 
 ## 7) Training + artifacts (CLI)
 
-### 7.1 Build processed dataset (optional)
+### 7.1 Build the processed dataset (optional)
 
 ```bash
 ".venv/bin/python" scripts/build_dataset.py
 ```
 
-### 7.2 Train + export L2 artifact
+### 7.2 Train + export the L2 artifact
 
 ```bash
 ".venv/bin/python" scripts/train.py --model logreg --tune --threshold 0.4 --artifact-name logreg_pipeline
 ```
 
-### 7.3 Train + export L1 artifact
+### 7.3 Train + export the L1 artifact
 
 ```bash
 ".venv/bin/python" scripts/train.py --model logreg --tune --penalty l1 --threshold 0.4 --artifact-name logreg_pipeline_l1
@@ -119,12 +134,12 @@ Figures (examples):
 
 ## 8) Evaluation results (from saved artifacts)
 
-Metrics are stored in the metadata JSON for reproducibility.
+All metrics are stored in the artifact metadata JSON to keep our results reproducible.
 
-- Default decision rule (no manual threshold): F1 ≈ 0.6844 (`logreg_pipeline_default.metadata.json`)
-- Screening threshold (threshold=0.4): F1 ≈ 0.7090 (`logreg_pipeline.metadata.json`)
+- **Default decision rule (no manual threshold):** F1 ≈ 0.6844 (`logreg_pipeline_default.metadata.json`)
+- **Screening threshold (threshold = 0.4):** F1 ≈ 0.7090 (`logreg_pipeline.metadata.json`)
 
-Note: The system focuses on the clinically meaningful, user-actionable views (probability, thresholding, confusion matrix, what-if changes). ROC-style plots are intentionally not used in the UI.
+Design note: For this project, we focus on clinically meaningful and user‑actionable views (probability, thresholding behavior, confusion matrix, and what‑if changes). ROC‑style plots are intentionally not used in the UI.
 
 ## 9) Backend API (FastAPI)
 
@@ -139,12 +154,12 @@ Start the backend:
 - `GET /health` → service readiness
 - `POST /predict` → risk probability + label
 - `GET /model-info` → available models, artifact metadata, dataset overview (dashboard)
-- `POST /analyze` → baseline + scenarios with delta probability and top drivers (what-if)
+- `POST /analyze` → baseline + scenarios with delta probability and top drivers (what‑if)
 - `GET /figures/{name}` → serves PNG figures from `reports/figures/` (hardened)
 
 ### 9.2 `/predict` contract
 
-Request body: a `PredictionRequest` with the 9 features.
+Request body: a `PredictionRequest` containing the 9 features.
 
 Optional query parameters:
 
@@ -160,18 +175,18 @@ curl -s "http://127.0.0.1:8000/predict?model=l2" \
 	-d '{"Age":45,"Gender":1,"BMI":28.2,"Systolic_BP":130,"Diastolic_BP":82,"Glucose":110,"Insulin":12,"Total_Cholesterol":190,"HDL_Cholesterol":48}'
 ```
 
-### 9.3 `/analyze` contract (what-if)
+### 9.3 `/analyze` contract (what‑if)
 
 `/analyze` accepts a baseline patient and a list of scenario overrides. It returns:
 
-- baseline risk probability + drivers
-- scenario risk probability + delta vs baseline + drivers
+- Baseline probability + drivers
+- Scenario probability + delta vs baseline + drivers
 
-This endpoint powers the UI’s probability-vs-Δ curve.
+This endpoint is what the UI uses to generate the probability‑vs‑Δ curve.
 
 ### 9.4 CORS / frontend compatibility
 
-Local dev CORS is configured to allow common Vite origins (e.g., ports `517x`).
+Local development CORS is configured for common Vite origins (for example, ports `517x`).
 
 ## 10) Frontend (React dashboard)
 
@@ -192,18 +207,18 @@ Optional backend URL override:
 
 ### 10.1 Implemented UI features
 
-- Input form with validation (min/max checks aligned to API schemas)
+- Input form with validation (aligned to API schemas)
 - Model selector: L2 (default) vs L1 (sparse)
-- Prediction result with probability + threshold + risk label
-- What‑If simulator:
-	- user changes one feature by Δ
-	- UI calls `/analyze` and displays the probability change
-	- UI renders a **dynamic curve** (probability vs Δ) that visibly changes with different inputs
-	- UI shows top drivers for the selected scenario
-- Model dashboard:
-	- dataset overview (rows, positive rate, female rate)
-	- model metrics (from metadata)
-	- confusion matrix (test set) image served via `/figures/{name}`
+- Prediction output: probability + threshold + risk label
+- What‑if simulator:
+  - user changes one feature by Δ
+  - UI calls `/analyze` and shows the probability change
+  - UI renders a **dynamic curve** (probability vs Δ) that changes based on the baseline inputs
+  - UI shows top drivers for the selected scenario
+- Dashboard:
+  - dataset overview (rows, positive rate, female rate)
+  - model metrics (from metadata)
+  - confusion matrix image served via `/figures/{name}`
 
 ## 11) Testing and quality gates
 
@@ -213,7 +228,7 @@ Optional backend URL override:
 .venv/bin/python -m pytest -q
 ```
 
-Current executed result: **9 passed**.
+Latest executed result: **9 passed**.
 
 ### 11.2 Frontend gates
 
@@ -230,35 +245,33 @@ Both pass in the current environment.
 - Test report: `docs/assessment5/TEST_REPORT.md` and `docs/assessment5/TEST_REPORT.pdf`
 - Validation report: `docs/assessment5/VALIDATION_REPORT.md` and `docs/assessment5/VALIDATION_REPORT.pdf`
 
-## 12) Demo flow (what to present)
+## 12) Demo flow (presentation checklist)
 
-1. Start backend → show `GET /health`
-2. Open UI → show API connected badge
-3. Enter patient inputs → run prediction → show probability + label
-4. Switch model (L2 ↔ L1) → show metrics/dashboard update
-5. Run what‑if (e.g., increase Glucose) → show Δ probability and the curve update
-6. Show confusion matrix figure as “test set evaluation” (does not change per single patient)
+1. Start the backend and show `GET /health`
+2. Open the UI and confirm the API connected status
+3. Enter patient inputs and run a prediction (probability + label)
+4. Switch model (L2 ↔ L1) and show that the dashboard updates
+5. Run a what‑if scenario (example: increase `Glucose`) and show the Δ probability + curve update
+6. Show the confusion matrix as the fixed test‑set evaluation (it does not change per patient)
 
-## 13) Limitations (honest academic notes)
+## 13) Limitations
 
-- NHANES is cross-sectional; this is a statistical risk estimator for demo/academic use.
-- Not validated for clinical decision-making.
+- NHANES is cross‑sectional; this is a statistical risk estimator intended for academic/demo use.
+- The system is not validated for clinical decision‑making.
 - External generalization requires evaluation on local populations.
 
 ## 14) Troubleshooting
 
 - If `uvicorn` fails to start:
-	- confirm dependencies: `".venv/bin/python" -m pip install -r requirements.txt`
-	- confirm editable install: `".venv/bin/python" -m pip install -e .`
-	- confirm port 8000 is free, or use `--port 8001`
-- If the UI shows API disconnected:
-	- confirm backend is running
-	- confirm `VITE_API_BASE_URL` matches the backend
-	- CORS is preconfigured for local dev origins, but custom origins must be allowed
+  - install dependencies: `".venv/bin/python" -m pip install -r requirements.txt`
+  - ensure editable install: `".venv/bin/python" -m pip install -e .`
+  - if port 8000 is busy, use `--port 8001`
+- If the UI shows “API disconnected”:
+  - confirm the backend is running
+  - confirm `VITE_API_BASE_URL` matches the backend URL
+  - CORS is preconfigured for local dev origins; custom origins must be explicitly allowed
 
 ## 15) Appendix: PDF export commands
-
-To export documentation/reports to PDF (used for submission):
 
 ```bash
 npx --yes md-to-pdf docs/assessment5/ASSESSMENT_5_DOCUMENTATION.md
